@@ -1,42 +1,54 @@
- import React from 'react';
-import { View, Text } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { ImageCard } from "@/components/ImageCard";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedView } from "@/components/ThemedView";
+import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
+import { Image, StyleSheet, Text } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-
-const Tab = createMaterialTopTabNavigator();
-
-function ForYou() {
+export default function explore() {
+  const wallpaper = useWallpapers();
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Library" component={HomeScreen} />
-      <Tab.Screen name="Liked" component={ProfileScreen} />
-      <Tab.Screen name="Suggested" component={Something} />
-    </Tab.Navigator>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ParallaxScrollView
+        headerBackgroundColor={{ dark: "black", light: "white" }}
+        headerImage={
+          <Image
+            style={{ flex: 1 }}
+            source={{
+              uri: wallpaper[0]?.url ?? "",
+            }}
+          />
+        }
+      >
+        <ThemedView style={styles.container}>
+          <ThemedView style={styles.innerContainer}>
+            <FlatList
+              data={wallpaper}
+              renderItem={({ item }) => <ImageCard wallpaper={item} />}
+              keyExtractor={(item) => item.name}
+            />
+          </ThemedView>
+          <ThemedView style={styles.innerContainer}>
+            <FlatList
+              data={wallpaper}
+              renderItem={({ item }) => <ImageCard wallpaper={item} />}
+              keyExtractor={(item) => item.name}
+            />
+          </ThemedView>
+        </ThemedView>
+      </ParallaxScrollView>
+    </SafeAreaView>
   );
 }
 
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Library!</Text>
-        </View>
-    );
-}
-
-function ProfileScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Liked!</Text>
-        </View>
-    );
-}
-
-function Something() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Suggested!</Text>
-        </View>
-    );
-}
-
-export default ForYou;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  innerContainer: {
+    flex: 1,
+    padding: 10,
+  },
+})

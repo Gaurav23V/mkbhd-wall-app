@@ -1,25 +1,22 @@
-import { DownloadPicture } from '@/components/BottomSheet';
-import { Button, Text } from 'react-native';
+
+
+import React from 'react';
+import { View, Text, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useRouter } from 'expo-router';
 
-export default function Account() {
-  const [pictureOpen, setPictureOpen] = useState(false);
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Text>Account Page</Text>
-      <Button
-        title="Open Bottom Sheet"
-        onPress={() => {
-          setPictureOpen(true);
-        }}
-      />
-      {/* Always render the DownloadPicture component */}
-      <DownloadPicture
-        pictureOpen={pictureOpen}
-        setPictureOpen={setPictureOpen}
-      />
-    </SafeAreaView>
-  );
-}
+const account: React.FC = () => {
+    const router = useRouter();
+    return (
+        <SafeAreaView>
+            <Text>Accountr Screen</Text>
+            <Button
+                title="Go to accountInfo"
+                onPress={() => router.push('/(nobottombar)/accountinfo')}
+            />
+        </SafeAreaView>
+    );
+};
+
+export default account;
